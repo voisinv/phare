@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <script src="app.less"></script>
+    </head>
+    <body ng-app="myApp">
+
+    <div ng-controller="myController as ctrl">
+        {{ctrl.text}}
+    </div>
+    <div ng-view></div>
+
+    <script src="app.min.js"></script>
+    <script src="templates/templates.js"></script>
+    <script src='http://localhost:35729/livereload.js?snipver=1'></script>
+    </body>
+</html>
