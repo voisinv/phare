@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{angularjs-DefinitelyTyped, browserify-DefinitelyTyped, express-DefinitelyTyped, gulp-DefinitelyTyped, gulp-babel-DefinitelyTyped, mocha-DefinitelyTyped}" />
+    <includedPredefinedLibrary name="ECMAScript 6" />
+  </component>
+</project>

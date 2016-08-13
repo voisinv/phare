@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/angular" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/angular-route" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/babel-core" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/babel-preset-es2015" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/babel-register" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/babelify" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/body-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/browserify" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/browserify-ng-html2js" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/connect-livereload" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/del" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/express" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/fs" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-concat" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-eslint" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-express" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-inject" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-jade" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-less" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-live-server" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-livereload" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-load-plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-ng-templates" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-nodemon" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-plumber" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-prettify" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-rename" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gulp-sourcemaps" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/http" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/load-plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/path" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/require-dir" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/run-sequence" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/tiny-lr" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/vinyl-buffer" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/vinyl-source-stream" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/watchify" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="gulp-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="gulp-babel-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="browserify-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angularjs-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="mocha-DefinitelyTyped" level="application" />
+  </component>
+</module>

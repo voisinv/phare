@@ -1,0 +1,1 @@
+require('phare-build-tool');
