@@ -24,15 +24,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, '../client')));
 
-app.get('/api', (req, res) => {
-  res.send(200, {ok: 'ok'});
+app.get('/api/articles', (req, res) => {
+  res.status(200).send({articles: ['one', 'two', 'three']});
 });
 app.listen(3000);
 console.log('Listening on port 3000');
 //app.use('/', routes);
 //app.use('/users', users);
-
 // production error handler
+
+
 // no stacktraces leaked to user
 app.use(function(err, req, res) {
   res.status(err.status || 500);
