@@ -1,0 +1,31 @@
+md-dialog(aria-label="Visualize",  ng-cloak, style='min-width: 300px')
+    md-toolbar
+        .md-toolbar-tools
+            h2 Configure
+    div(layout="row", layout-align="center center")
+        div(layout='column', style='margin: 30px 0')
+            md-input-container
+                label Organization
+                md-select(
+                ng-model='dialogDataviz.database',
+                placeholder='Organization',
+                md-on-open='dialogDataviz.loadDatabases()'
+                style='min-width: 200px')
+                    md-option(ng-value='item', ng-repeat='item in dialogDataviz.databases') {{item}}
+            md-input-container
+                label Project
+                md-select(
+                ng-model='dialogDataviz.project',
+                placeholder='Project',
+                md-on-open='dialogDataviz.loadProjects()'
+                style='min-width: 200px')
+                    md-option(ng-value='project', ng-repeat='project in dialogDataviz.projects') {{project}}
+            md-checkbox(
+            ng-model='changeDepth',
+            ng-change='!changeDepth ? dialogDataviz.step = 5 : null',
+            style='margin: 15px 0 -5px 0') Change depth
+            div(layout='', layout-align='center center')
+                md-slider.md-primary( flex='', ng-disabled='!changeDepth', ng-readonly='!changeDepth', md-discrete, ng-model='dialogDataviz.step', step='1', min='1', max='10', aria-label='rating')
+            md-button.md-raised.md-primary(ng-disabled='!dialogDataviz.project', ng-click='dialogDataviz.visualize()') Visualize
+
+
