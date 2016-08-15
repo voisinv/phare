@@ -25,7 +25,7 @@ app.get('*', (req, res) => {
 
 app.listen(process.env.PORT || 3000);
 
-console.log(process.env.PORT || 3000);
+console.log('Listening on port ' + process.env.PORT || 3000);
 
 app.use(function(err, req, res) {
   res.send(null, err.status || 500);
