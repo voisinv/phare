@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/build" />
-      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules/angular" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules/angular-route" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules/babel-core" />
@@ -51,5 +50,11 @@
     <orderEntry type="library" name="angularjs-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="mocha-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="firebase-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="lodash-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="lodash" level="project" />
+    <orderEntry type="library" name="promise-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="jLouvain" level="project" />
+    <orderEntry type="library" name="node_modules" level="project" />
   </component>
 </module>

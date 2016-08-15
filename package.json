@@ -14,11 +14,18 @@
   },
   "dependencies": {
     "angular": "*",
+    "angular-animate": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "angular-material": "^1.0.9",
+    "angular-messages": "^1.5.8",
     "angular-route": "*",
     "express": "^4.14.0",
+    "firebase": "^3.2.1",
+    "lodash": "^4.15.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "morgan": "^1.7.0",
     "phare-build-tool": "*"
   }
 }
