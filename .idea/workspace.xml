@@ -35,7 +35,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4515a63a-ee38-4c18-88a4-6d74ed3267bd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.js" afterPath="$PROJECT_DIR$/server/server.js" />
     </list>
     <ignored path="project-template.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,7 +57,7 @@
     <splitter split-orientation="horizontal" split-proportion="0.47285354">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+          <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/package.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="415">
@@ -149,11 +149,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/server/server.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="309">
-                  <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+                <state relative-caret-position="561">
+                  <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
                   <folding />
                 </state>
               </provider>
@@ -259,7 +259,6 @@
         <option value="$PROJECT_DIR$/node_modules/phare-build-tool/tasks/task-serve.js" />
         <option value="$PROJECT_DIR$/server/utils/aggregate.js" />
         <option value="node.js" />
-        <option value="$PROJECT_DIR$/server/server.js" />
         <option value="$PROJECT_DIR$/server/utils/articles.js" />
         <option value="$PROJECT_DIR$/server/connect/firebase-connect.js" />
         <option value="$PROJECT_DIR$/tests/api/base.spec.js" />
@@ -276,6 +275,7 @@
         <option value="$PROJECT_DIR$/client/features/dataviz/graph.js" />
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/server/server.js" />
       </list>
     </option>
   </component>
@@ -745,7 +745,7 @@
       <workItem from="1471088097301" duration="174000" />
       <workItem from="1471088289166" duration="159000" />
       <workItem from="1471088481517" duration="46000" />
-      <workItem from="1471088537059" duration="67825000" />
+      <workItem from="1471088537059" duration="68008000" />
     </task>
     <task id="LOCAL-00001" summary="procfile">
       <created>1471289375061</created>
@@ -761,11 +761,18 @@
       <option name="project" value="LOCAL" />
       <updated>1471289740538</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="procfile">
+      <created>1471290747403</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1471290747403</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68891000" />
+    <option name="totallyTimeSpent" value="69074000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1172,14 +1179,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/features/dataviz/dialog.dataviz.tpl.jade">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
@@ -1242,6 +1241,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
           <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
           <folding />
         </state>
       </provider>
