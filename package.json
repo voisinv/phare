@@ -23,10 +23,10 @@
     "express": "^4.14.0",
     "firebase": "^3.2.1",
     "lodash": "^4.15.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "phare-build-tool": "*"
   },
   "devDependencies": {
-    "morgan": "^1.7.0",
-    "phare-build-tool": "*"
+    "morgan": "^1.7.0"
   }
 }
