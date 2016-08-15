@@ -1,1 +1,1 @@
-web: npm i -g gulp && gulp build && node build/server/server.js
+web: gulp build && node build/server/server.js
