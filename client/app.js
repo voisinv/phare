@@ -22,7 +22,7 @@ angular
         templateUrl: 'features/dataviz/dataviz.tpl.html'
       })
       .otherwise({
-        redirectTo: '/view1'
+        redirectTo: '/dataviz'
       });
   })
   .controller('mainCtrl', ['$templateCache', ($templateCache, $route) => {
