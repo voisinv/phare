@@ -4,17 +4,21 @@ const dialogController = [
   function($scope, $http, $mdDialog) {
     const self = this;
     self.step = 5;
-    self.loadDatabases = () => {
-      $http.get('/api/get/all')
-        .then(({data}) => self.databases = data);
-    };
+
+    $http.get('/api/get/all')
+      .then(({data}) => self.databases = data);
+
     self.loadProjects = () => {
-      $http.get('/api/get/' + self.database.toLowerCase())
-        .then(({data}) => self.projects = data);
+
+
     };
-    $scope.$watch(() => self.database, () => {
+    $scope.$watch(() => self.database, (val) => {
+      if (!val) return;
       self.projects = [];
       self.project = null;
+
+      $http.get('/api/get/' + val.toLowerCase())
+        .then(({data}) => self.projects = data);
     });
 
     self.visualize = () => {
