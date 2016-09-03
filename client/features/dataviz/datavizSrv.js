@@ -4,7 +4,7 @@ const screenWidth = window.innerWidth;
 const screenHeight = window.innerHeight;
 
 const width = 1260;
-const height = 800;
+const height = 1000;
 
 //const c10 = d3.scale.category10();
 const color = d3.scaleOrdinal(d3.schemeCategory20);
