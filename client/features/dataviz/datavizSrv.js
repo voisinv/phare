@@ -12,7 +12,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory20);
 let simulation;
 let nodes;
 let links;
-
+let circleGroup;
 //const scale = d3.scale
 
 function createSVG(data) {
@@ -37,7 +37,7 @@ function createSVG(data) {
     const n = 100;
     for (var i = 100; i > 0; --i) simulation.tick();
     simulation.stop();
-    const circleEnter = svg.selectAll('.circle').data(data.tags).enter().append('g');
+    circleGroup = svg.selectAll('.circle').data(data.tags).enter().append('g');
 
     links = svg.selectAll('.link').data(data.links).enter()
       .append('line')
@@ -49,7 +49,7 @@ function createSVG(data) {
       .attr("x2", (d) => d.target.x)
       .attr("y2", (d) => d.target.y);
 
-    nodes = circleEnter
+    nodes = circleGroup
       .append('circle')
       .attr('class', 'circle')
       .attr('class', 'node')
@@ -57,41 +57,41 @@ function createSVG(data) {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.weight * 5)
-      .on('mouseenter', showValue)
-      .on('mouseleave', hideValue)
+      .on('mouseenter', showLabel)
+      .on('mouseleave', hideLabel)
       // put circle on top of svg
       .each(function() {
         d3.select(this.parentNode).raise();
       });
+    circleGroup
+      .append('text')
+      .attr('fill', 'black')
+      .style('opacity', 0)
+      .attr('x', d => (d.x - (d.weight * 5)))
+      .attr('y', d => (d.y - (d.weight * 5)) - 5)
+      .attr('dx', function(d) {
+        var elem = this;
+        setTimeout(() =>
+          d3.select(elem)
+            .attr('dx', ((d.weight * 10) - elem.getBBox().width)/2));
+        return 0;
+      })
+      .text(d => _.capitalize(d.value));
   });
 }
 
-function showValue(d) {
-  d3.select(this.parentNode)
-    .append('text')
-    .attr('fill', 'black')
-    .attr('x', (d.x - (d.weight * 5)))
-    .attr('y', (d.y - (d.weight * 5)) - 5)
-    .attr('dx', function() {
-      var elem = this;
-      setTimeout(() =>
-        d3.select(elem)
-          .attr('dx', ((d.weight * 10) - elem.getBBox().width)/2));
-      return 0;
-    })
-    .text(_.capitalize(d.value));
+function showLabel() {
+  d3.select(this.parentNode.lastChild)
+    .style('opacity', 1);
 }
 
-function hideValue(d) {
+function hideLabel() {
   d3.select(this.parentNode.lastChild)
-    .transition()
-    .attr('opacity', 0)
-    .transition()
-    .remove();
+    .transition().style('opacity', 0);
 }
 
 function filter(step) {
-  nodes
+  circleGroup
     .attr('opacity', d => d.weight >= step ? 1 : 0);
 
   links
@@ -99,11 +99,12 @@ function filter(step) {
 }
 
 function displayName(shouldDisplay) {
+
   if (shouldDisplay) {
-    d3.selectAll('.node').each(showValue);
+    nodes.each(function() { showLabel.call(this) });
   }
   else {
-    d3.selectAll('.node').each(hideValue);
+    nodes.each(function() { hideLabel.call(this) });
   }
 }
 
