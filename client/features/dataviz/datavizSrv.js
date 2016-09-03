@@ -5,6 +5,7 @@ const screenHeight = window.innerHeight;
 
 const width = 1260;
 const height = 1000;
+const _ = require('lodash');
 
 //const c10 = d3.scale.category10();
 const color = d3.scaleOrdinal(d3.schemeCategory20);
@@ -56,16 +57,37 @@ function createSVG(data) {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.weight * 5)
-      .on('click', e => alert(e.value))
+      .on('mouseenter', showValue)
+      .on('mouseleave', hideValue)
       // put circle on top of svg
       .each(function() {
         d3.select(this.parentNode).raise();
       });
-
-
   });
+}
 
+function showValue(d) {
+  d3.select(this.parentNode)
+    .append('text')
+    .attr('fill', 'black')
+    .attr('x', (d.x - (d.weight * 5)))
+    .attr('y', (d.y - (d.weight * 5)) - 5)
+    .attr('dx', function() {
+      var elem = this;
+      setTimeout(() =>
+        d3.select(elem)
+          .attr('dx', ((d.weight * 10) - elem.getBBox().width)/2));
+      return 0;
+    })
+    .text(_.capitalize(d.value));
+}
 
+function hideValue(d) {
+  d3.select(this.parentNode.lastChild)
+    .transition()
+    .attr('opacity', 0)
+    .transition()
+    .remove();
 }
 
 function filter(step) {
@@ -74,6 +96,15 @@ function filter(step) {
 
   links
     .attr('opacity', d => d.source.weight >= step && d.target.weight >= step ? 0.6 : 0);
+}
+
+function displayName(shouldDisplay) {
+  if (shouldDisplay) {
+    d3.selectAll('.node').each(showValue);
+  }
+  else {
+    d3.selectAll('.node').each(hideValue);
+  }
 }
 
 function ticked() {
@@ -87,7 +118,6 @@ function ticked() {
     .attr('cy', d => d.y);
 
 }
-const _ = require('lodash');
 module.exports = ['$http', function($http) {
   function init() {
     $http.get('/mock').then(res => {
@@ -98,6 +128,7 @@ module.exports = ['$http', function($http) {
 
   return {
     init,
-    filter
+    filter,
+    displayName
   };
 }];

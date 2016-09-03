@@ -6,10 +6,13 @@ module.exports = function($scope, datavizSrv) {
   datavizSrv.init();
 
   $scope.$watch(() => self.step, (val, old) => {
-    if (val !== old) {
-      datavizSrv.filter(val);
-    }
+    if (val !== old) datavizSrv.filter(val);
   });
+
+  $scope.$watch(() => self.displayName, (val, old) => {
+      if (val !== old) datavizSrv.displayName(val);
+    }
+  );
 
 
   /*
