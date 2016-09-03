@@ -86,6 +86,7 @@ function showLabel() {
 }
 
 function hideLabel() {
+  if (SHOW_ALL_LABEL) return;
   d3.select(this.parentNode.lastChild)
     .transition().style('opacity', 0);
 }
@@ -97,9 +98,9 @@ function filter(step) {
   links
     .attr('opacity', d => d.source.weight >= step && d.target.weight >= step ? 0.6 : 0);
 }
-
+let SHOW_ALL_LABEL = false;
 function displayName(shouldDisplay) {
-
+  SHOW_ALL_LABEL = shouldDisplay;
   if (shouldDisplay) {
     nodes.each(function() { showLabel.call(this) });
   }
