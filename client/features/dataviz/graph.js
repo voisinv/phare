@@ -13,6 +13,10 @@ module.exports = function($scope, datavizSrv) {
       if (val !== old) datavizSrv.displayName(val);
     }
   );
+  $scope.$watch(() => self.width, (val, old) => {
+      if (val !== old) datavizSrv.changeWidth(val);
+    }
+  );
 
 
   /*

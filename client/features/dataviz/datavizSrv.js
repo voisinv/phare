@@ -1,8 +1,5 @@
 const d3 = require('d3');
 
-const screenWidth = window.innerWidth;
-const screenHeight = window.innerHeight;
-
 const width = 1260;
 const height = 1000;
 const _ = require('lodash');
@@ -35,15 +32,15 @@ function createSVG(data) {
     //.on('tick', ticked);
 
     const n = 100;
-    for (var i = 100; i > 0; --i) simulation.tick();
+    for (var i = 500; i > 0; --i) simulation.tick();
     simulation.stop();
     circleGroup = svg.selectAll('.circle').data(data.tags).enter().append('g');
 
     links = svg.selectAll('.link').data(data.links).enter()
       .append('line')
       .attr('class', 'link')
-      .attr('opacity', 0.2)
-      .attr('stroke-width', d => d.value)
+      .style('stroke', d => color(d.source.group))
+      //.style('stroke-width', d => d.source.weight > 1 && d.target.weight > 1 ? (d.source.weight + d.target.weight) / 3 : 0)
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
       .attr("x2", (d) => d.target.x)
@@ -109,6 +106,10 @@ function displayName(shouldDisplay) {
   }
 }
 
+function changeWidth(val) {
+  links.style('stroke-width', val)
+}
+
 function ticked() {
   //links
   //  .attr("x1", (d) => d.source.x)
@@ -131,6 +132,7 @@ module.exports = ['$http', function($http) {
   return {
     init,
     filter,
-    displayName
+    displayName,
+    changeWidth
   };
 }];
