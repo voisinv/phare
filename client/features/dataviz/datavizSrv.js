@@ -68,6 +68,14 @@ function createSVG(data) {
 
 }
 
+function filter(step) {
+  nodes
+    .attr('opacity', d => d.weight >= step ? 1 : 0);
+
+  links
+    .attr('opacity', d => d.source.weight >= step && d.target.weight >= step ? 0.6 : 0);
+}
+
 function ticked() {
   //links
   //  .attr("x1", (d) => d.source.x)
@@ -89,6 +97,7 @@ module.exports = ['$http', function($http) {
   }
 
   return {
-    init
+    init,
+    filter
   };
 }];

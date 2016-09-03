@@ -1,7 +1,16 @@
-module.exports = function(datavizSrv) {
+module.exports = function($scope, datavizSrv) {
 
+  const self = this;
+  self.step = 1;
 
   datavizSrv.init();
+
+  $scope.$watch(() => self.step, (val, old) => {
+    if (val !== old) {
+      datavizSrv.filter(val);
+    }
+  });
+
 
   /*
   const width = $window.innerWidth;

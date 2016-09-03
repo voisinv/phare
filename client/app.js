@@ -31,8 +31,9 @@ angular
   }])
   .controller('myController', angular.noop)
   .component('myComponent', {
-    template: '<div id=\'graph\'></div>',
+    templateUrl: 'features/dataviz/graph.tpl.html',
     controller: require('./features/dataviz/graph.js'),
+    controllerAs: 'graph',
     bindings: {
       graph: '='
     }
