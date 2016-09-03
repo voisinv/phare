@@ -20,7 +20,7 @@ describe('', function() {
       .get('/api/articles?base=bdd-dev&projet=projet1')
       .expect(200)
       .end(function(err, res) {
-        res.body.links[200].source.should.be.equal(115);
+        res.body.links[200].source.should.be.equal(38);
         res.body.links[200].target.should.be.equal(133);
         res.body.links[200].value.should.be.equal(3);
         res.body.links.length.should.be.equal(4510);

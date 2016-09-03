@@ -9,6 +9,11 @@ module.exports = {
     });
   },
   retrieve: (query, res) => {
+    // myFirebase
+    // .base(base)
+    // .project(project)
+    // .then(res => res.status(200).send('ok'));
+
     access.getAll(query.base, query.project).then((r) => {
       res.status(200).send(r);
     }, (err) => {

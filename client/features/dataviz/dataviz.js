@@ -32,6 +32,9 @@ const dialogController = [
 const $ = require('jquery');
 module.exports = ['$scope', '$http', '$mdDialog', '$mdMedia', function($scope, $http, $mdDialog, $mdMedia) {
   const self = this;
+
+  self.isReady = true;
+
   self.configure = (ev) => {
     const useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
     $mdDialog.show({

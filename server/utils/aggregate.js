@@ -15,6 +15,7 @@ var getLinkWithWeight = function(tags, allTags, links) {
     for (var sIt = fIt + 1; sIt < tags.length; sIt++) {
       let idSource = getIndex.call(allTags, tags[fIt]);
       let idTarget = getIndex.call(allTags, tags[sIt]);
+
       let link = _.find(links, {source: idSource, target: idTarget});
       // If link already exist
       if (link) {
@@ -42,16 +43,40 @@ const createLinks = function(result) {
       getLinkWithWeight(article.tags, obj.tags, obj.links);
     }
   });
+  //obj.tags = getTagsList(result);
   return obj;
+};
+
+const getTagsList = function(result) {
+  var tagsList = [];
+  if(result.articles) {
+    var articles = _.values(result.articles);
+
+    articles.forEach(function (article) {
+      if (article.tags && article.tags.length > 0) {
+        article.tags.forEach(function (tag) {
+          var tempTag = _.find(tagsList, {value: tag});
+          if (tempTag) {
+            tempTag.weight++;
+          } else {
+            tagsList.push({value: tag, weight: 1});
+          }
+        });
+      }
+    });
+  }
+
+  return tagsList;
 };
 
 module.exports = {
   toDataviz: (data) => {
     // data splitted by link and tags
     const mapped = createLinks(data);
+    mapped.tags = getTagsList(data);
     mapped.tags.forEach((e, i) => e.id = i);
-
-    mapped.links = mapped.links.filter((e) => e.source && e.target);
+    var tagsLength = mapped.tags.length;
+    mapped.links = mapped.links.filter(e => e.source < tagsLength && e.target < tagsLength);
     const community = jLouvain().nodes(_.map(mapped.tags, 'id')).edges(mapped.links)();
     // console.log(community);
     mapped.tags.forEach((elem, i) => {

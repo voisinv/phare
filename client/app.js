@@ -37,6 +37,7 @@ angular
       graph: '='
     }
   })
-  .controller('datavizCtrl', require('./features/dataviz/dataviz'));
+  .service('datavizSrv', require('./features/dataviz/datavizSrv.js'))
+  .controller('datavizCtrl', require('./features/dataviz/dataviz.js'));
 
 

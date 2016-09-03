@@ -19,8 +19,14 @@ function retrieveBddNames(resolve) {
 }
 
 module.exports = {
+  /**
+   * @name getBase
+   * @param base
+   * @param project
+   * @returns {Promise.<T>} which represent the instance of the connection to the firebase db
+   **/
+
   get: (db, project) => {
-    'so';
     var promise = new Promise(retrieveBddNames);
     return promise
       .then(() => {
@@ -48,6 +54,16 @@ module.exports = {
         return (ref || snapshot).val();
       });
   },
+  /**
+   * @name project
+   * @param base
+   * @param project
+   * @returns {Promise.<T>}
+   */
+  // return a promise
+  // which represent the instance of the connection to the project
+
+
   getAll: (base, project) => {
     return new Promise(retrieveBddNames)
       .then((bdd) => {

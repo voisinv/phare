@@ -1,5 +1,9 @@
-const d3 = require('d3');
-module.exports = function($scope, $window) {
+module.exports = function(datavizSrv) {
+
+
+  datavizSrv.init();
+
+  /*
   const width = $window.innerWidth;
   const height = $window.innerHeight;
 
@@ -61,7 +65,8 @@ module.exports = function($scope, $window) {
     })
     .style('stroke-width', d => d.value > 3 ? d.value / 3 : 0);
 
-  var node = svg.selectAll('.node')
+  var node = svg
+    .selectAll('.node')
     .data(graph.nodes)
     .enter().append('circle')
     .attr('class', 'node')
@@ -70,18 +75,20 @@ module.exports = function($scope, $window) {
     .call(force.drag)
     //.on('click', (d) => alert( ' '+ d.label + ' ' + d.weight))
     .attr('transform', d => 'translate(' + d + ')');
-  /*
-   node.append('title')
-   .text(function(d) { return d.name; });*/
 
-  force.on('tick', function() {
+   node.append('title')
+   .text(function(d) { return d.name; });
+
+  force.on('tick', () => {
     link
       .attr('x1', d => d.source.x)
       .attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x)
       .attr('y2', d => d.target.y);
 
-    node.attr('cx', d => d.x)
+    node
+      .attr('cx', d => d.x)
       .attr('cy', d => d.y);
   });
-}
+  */
+};
