@@ -101,7 +101,14 @@ function createSVG(data) {
 }
 
 let CURRENT_NODE_INDEX;
+document.addEventListener('click', function() {
+  nodeClicked(null, CURRENT_NODE_INDEX);
+});
 function nodeClicked(e, index) {
+  event.stopPropagation();
+  if (CURRENT_NODE_INDEX === -1 && _.isUndefined(index)) {
+    return;
+  }
   if (index === CURRENT_NODE_INDEX) {
     reset();
     CURRENT_NODE_INDEX = -1;
@@ -219,7 +226,7 @@ function changeWidth(val) {
 }
 
 function reset() {
-  circleGroup.style('opacity', 1);
+  nodes.style('opacity', 0.8);
   links
     .style('stroke-width', 0.5)
     .style('opacity', 0.5);
