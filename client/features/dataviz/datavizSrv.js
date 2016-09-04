@@ -109,7 +109,7 @@ function nodeClicked(e, index) {
   }
   CURRENT_NODE_INDEX = index;
   let indexOfNodes = [];
-  hideNodes.style('opacity', 1);
+  hideNodes.attr('opacity', 1);
   getLinksToModify()
     .style('opacity', 0.1)
     .style('stroke-width', 0.3)
@@ -122,10 +122,7 @@ function nodeClicked(e, index) {
     });
 
   getNodesToModify()
-    .each(function(d, i) {
-      const e = d3.select(this.parentNode);
-      e.style('opacity', (indexOfNodes.indexOf(i) + 1) ? 1 : 0.3);
-    });
+    .style('opacity', (indexOfNodes.indexOf(i) + 1) ? 1 : 0.3);
 
 
   displayName(SHOW_ALL_LABEL);
