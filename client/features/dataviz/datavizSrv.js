@@ -16,13 +16,20 @@ let svg;
 var zoom = d3.zoom()
   .scaleExtent([1, 100])
   .on('zoom', function() {
+    lastTransformation = d3.event.transform;
     hideNodes
-      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
     nodes
-      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
     links
-      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
   });
+function zoomed() {
+  lastTransformation = d3.event.transform;
+  circleGroup.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
+  links.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
+}
+let lastTransformation = {x: 0, y: 0};
 function createSVG(data) {
   svg = d3.select('.visualize-svg')
     .append('svg')
@@ -30,8 +37,11 @@ function createSVG(data) {
     .attr('height', height)
     .attr('display', 'block')
     .style('margin', 'auto')
-    .style('border', '1px solid black');
-  //.call(zoom);
+    .style('border', '1px solid black')
+    .call(d3.zoom()
+      .scaleExtent([1 / 2, 8])
+      .on('zoom', zoomed));
+    //.call(zoom);
 
 
   setTimeout(() => {
@@ -138,20 +148,28 @@ function nodeClicked(e, index) {
 // MUST be nodes object
 function showLabel(d) {
   d3.select(this).style('opacity', 1);
+  const circle = d3.select(this);
+
   d3.select(this.parentNode.parentNode)
     .append('text')
     .attr('fill', 'black')
-    .attr('x', (d.x - (d.weight * 5)))
-    .attr('y', (d.y - (d.weight * 5)) - 5)
+
     .attr('dx', function() {
       var elem = this;
       setTimeout(() =>
         d3.select(elem)
           .transition()
-          .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2));
+          .attr('x', (d.x - (d.weight * 5)))
+          .attr('y', (d.y - (d.weight * 5)) - 5)
+          .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2)
+          //.attr('x', (circle.attr('cx') - (d.weight * 5)))
+          //.attr('y', (circle.attr('cy') - (d.weight * 5)) - 5)
+          //.attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2))
+      );
       return 0;
     })
-    //.attr('transform', 'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ') scale(' + d3.event.transform.k + ')')
+    .attr('transform', lastTransformation)
+    //.attr('transform', 'translate(' + lastTransformation.x + ',' + lastTransformation.y + ')' )
 
     .text(_.capitalize(d.value));
 }
