@@ -17,11 +17,11 @@ var zoom = d3.zoom()
   .scaleExtent([1, 100])
   .on('zoom', function() {
     hideNodes
-      .attr('transform', 'translate(' + (d3.event.transform.x*2) + ',' + (2*d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
     nodes
-      .attr('transform', 'translate(' + (d3.event.transform.x*2) + ',' + (2*d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
     links
-      .attr('transform', 'translate(' + (d3.event.transform.x*2) + ',' + (2*d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
+      .attr('transform', 'translate(' + (d3.event.transform.x * 2) + ',' + (2 * d3.event.transform.y) + ') scale(' + (d3.event.transform.k * 2) + ')');
   });
 function createSVG(data) {
   svg = d3.select('.visualize-svg')
@@ -30,21 +30,20 @@ function createSVG(data) {
     .attr('height', height)
     .attr('display', 'block')
     .style('margin', 'auto')
-    .style('border', '1px solid black')
-    //.call(zoom);
+    .style('border', '1px solid black');
+  //.call(zoom);
 
 
   setTimeout(() => {
     simulation = d3.forceSimulation(data.tags)
       .force('charge', d3.forceManyBody().strength(-150))
       .force('link', d3.forceLink(data.links))
-      .force("collide", d3.forceCollide().radius(d => (5*d.weight) + 0.5))
+      .force('collide', d3.forceCollide().radius(d => (5 * d.weight) + 0.5))
       .force('x', d3.forceX(width / 2))
-      .force('y', d3.forceY(height / 2))
+      .force('y', d3.forceY(height / 2));
     //.on('tick', ticked);
 
-    const n = 100;
-    for (var i = 500; i > 0; --i) simulation.tick();
+    for (var i = 400; i > 0; --i) simulation.tick();
     simulation.stop();
     circleGroup = svg.selectAll('.circle').data(data.tags).enter().append('g');
 
@@ -53,10 +52,10 @@ function createSVG(data) {
       .attr('class', 'link')
       .style('stroke', d => color(d.source.group))
       //.style('stroke-width', d => d.source.weight > 1 && d.target.weight > 1 ? (d.source.weight + d.target.weight) / 3 : 0)
-      .attr("x1", (d) => d.source.x)
-      .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => d.target.x)
-      .attr("y2", (d) => d.target.y);
+      .attr('x1', (d) => d.source.x)
+      .attr('y1', (d) => d.source.y)
+      .attr('x2', (d) => d.target.x)
+      .attr('y2', (d) => d.target.y);
 
     hideNodes = circleGroup
       .append('circle')
@@ -64,7 +63,7 @@ function createSVG(data) {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.weight * 5)
-      ;
+    ;
 
     nodes = circleGroup
       .append('circle')
@@ -81,23 +80,23 @@ function createSVG(data) {
         d3.select(this.parentNode).raise();
       })
       .on('click', nodeClicked)
-      ;
+    ;
     /*circleGroup
-      .append('text')
-      .attr('fill', 'black')
-      .style('opacity', 0)
-      .attr('x', d => (d.x - (d.weight * 5)))
-      .attr('y', d => (d.y - (d.weight * 5)) - 5)
-      .attr('dx', function(d) {
-        var elem = this;
-        setTimeout(() =>
-          d3.select(elem)
-            .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2));
-        return 0;
-      })
-      //.attr('transform', 'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ') scale(' + d3.event.transform.k + ')')
+     .append('text')
+     .attr('fill', 'black')
+     .style('opacity', 0)
+     .attr('x', d => (d.x - (d.weight * 5)))
+     .attr('y', d => (d.y - (d.weight * 5)) - 5)
+     .attr('dx', function(d) {
+     var elem = this;
+     setTimeout(() =>
+     d3.select(elem)
+     .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2));
+     return 0;
+     })
+     //.attr('transform', 'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ') scale(' + d3.event.transform.k + ')')
 
-      .text(d => _.capitalize(d.value));*/
+     .text(d => _.capitalize(d.value));*/
   });
 }
 
@@ -110,7 +109,8 @@ function nodeClicked(e, index) {
   }
   CURRENT_NODE_INDEX = index;
   let indexOfNodes = [];
-  links
+  hideNodes.style('opacity', 1);
+  getLinksToModify()
     .style('opacity', 0.1)
     .style('stroke-width', 0.3)
     .filter(d => d.source.id === index || d.target.id === index)
@@ -121,10 +121,11 @@ function nodeClicked(e, index) {
       indexOfNodes.push(d.target.id);
     });
 
-  circleGroup
-    .style('opacity', 0.3)
-    .filter((d, i) => indexOfNodes.indexOf(i) + 1)
-    .style('opacity', 1);
+  getNodesToModify()
+    .each(function(d, i) {
+      const e = d3.select(this.parentNode);
+      e.style('opacity', (indexOfNodes.indexOf(i) + 1) ? 1 : 0.3);
+    });
 
 
   displayName(SHOW_ALL_LABEL);
@@ -161,9 +162,12 @@ function hideLabel() {
 function filter(step) {
   links
     .style('opacity', d => d.source.weight >= step && d.target.weight >= step ? 0.6 : 0);
-  circleGroup
-    .style('opacity', d => d.weight >= step ? 1 : 0);
-  displayName(SHOW_ALL_LABEL)
+  nodes
+  //.filter(shouldDisplayLabelWhenClicked)
+    .each(function() {
+      d3.select(this.parentNode).style('opacity', d => d.weight >= step ? 1 : 0);
+    });
+  displayName(SHOW_ALL_LABEL);
 }
 let SHOW_ALL_LABEL = false;
 function displayName(shouldDisplay) {
@@ -183,7 +187,16 @@ function displayName(shouldDisplay) {
     select.each(showLabel);
   }
 }
+function getLinksToModify() {
+  return links
+    .filter(function() {
+      return d3.select(this).style('opacity') != 0;
+    });
+}
 
+function getNodesToModify() {
+  return CURRENT_NODE_INDEX !== -1 ? nodes.filter(shouldDisplayLabelWhenClicked) : nodes.filter(shouldDisplayLabel);
+}
 function showLabelOnMouseEnter(d) {
   if (shouldDisplayLabelWhenClicked.call(this) && !SHOW_ALL_LABEL) {
     showLabel.call(this, d);
@@ -205,7 +218,7 @@ function shouldDisplayLabel() {
 }
 
 function changeWidth(val) {
-  links.style('stroke-width', val)
+  links.style('stroke-width', val);
 }
 
 function reset() {
@@ -217,10 +230,10 @@ function reset() {
 
 function ticked() {
   //links
-  //  .attr("x1", (d) => d.source.x)
-  //  .attr("y1", (d) => d.source.y)
-  //  .attr("x2", (d) => d.target.x)
-  //  .attr("y2", (d) => d.target.y);
+  //  .attr('x1', (d) => d.source.x)
+  //  .attr('y1', (d) => d.source.y)
+  //  .attr('x2', (d) => d.target.x)
+  //  .attr('y2', (d) => d.target.y);
   nodes
     .attr('cx', d => d.x)
     .attr('cy', d => d.y);
