@@ -84,5 +84,9 @@ module.exports = {
       elem.size = elem.weight;
     });
     return mapped;
+  },
+
+  articles: (data, value) => {
+    return _.values(data.articles).filter(e => e.tags.indexOf(value) + 1);
   }
 };

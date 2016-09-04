@@ -9,5 +9,13 @@ div(layout-wrap, layout-align="row")
             | Display name
         md-button.md-primary(ng-click='graph.reset()', md-no-ink) Reset
 
+div(layout-wrap, layout='row')
+    .visualize-svg(flex='75')
 
-.visualize-svg
+    div(flex='25', layout-fill)
+        md-list-item.md-3-line.md-long-text(ng-repeat='article in graph.articles')
+            .md-list-item-text(layout='column')
+                h3(style='white-space:normal')
+                    a(target='_blank', href='http://{{article.url}}') {{ article.title }}
+                p {{ article.url.split('/')[0] }}
+                p {{ article.date | date: 'dd MMM yyyy' }}

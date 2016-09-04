@@ -29,18 +29,18 @@ function zoomed() {
   circleGroup.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
   links.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
 }
-let lastTransformation = {x: 0, y: 0};
+let lastTransformation = {x: 0, y: 0, k:0};
 function createSVG(data) {
   svg = d3.select('.visualize-svg')
     .append('svg')
     .attr('width', width)
     .attr('height', height)
-    .attr('display', 'block')
-    .style('margin', 'auto')
+    //.attr('display', 'block')
+    //.style('margin', 'auto')
     .style('border', '1px solid black')
-    .call(d3.zoom()
+    /*.call(d3.zoom()
       .scaleExtent([1 / 2, 8])
-      .on('zoom', zoomed));
+      .on('zoom', zoomed));*/
     //.call(zoom);
 
 
@@ -143,6 +143,8 @@ function nodeClicked(e, index) {
 
 
   displayName(SHOW_ALL_LABEL);
+
+  nodeSelectedCbFn(e.value);
 }
 
 // MUST be nodes object
@@ -153,14 +155,13 @@ function showLabel(d) {
   d3.select(this.parentNode.parentNode)
     .append('text')
     .attr('fill', 'black')
-
+    .attr('x', (d.x - (d.weight * 5)))
+    .attr('y', (d.y - (d.weight * 5)) - 5)
     .attr('dx', function() {
       var elem = this;
       setTimeout(() =>
         d3.select(elem)
           .transition()
-          .attr('x', (d.x - (d.weight * 5)))
-          .attr('y', (d.y - (d.weight * 5)) - 5)
           .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2)
           //.attr('x', (circle.attr('cx') - (d.weight * 5)))
           //.attr('y', (circle.attr('cy') - (d.weight * 5)) - 5)
@@ -168,7 +169,7 @@ function showLabel(d) {
       );
       return 0;
     })
-    .attr('transform', lastTransformation)
+    //.attr('transform', lastTransformation)
     //.attr('transform', 'translate(' + lastTransformation.x + ',' + lastTransformation.y + ')' )
 
     .text(_.capitalize(d.value));
@@ -261,6 +262,9 @@ function ticked() {
     .attr('cy', d => d.y);
 
 }
+
+let nodeSelectedCbFn;
+
 module.exports = ['$http', function($http) {
   function init() {
     $http.get('/mock').then(res => {
@@ -274,6 +278,7 @@ module.exports = ['$http', function($http) {
     filter,
     displayName,
     changeWidth,
-    reset
+    reset,
+    nodeSelectedCb : fn => nodeSelectedCbFn = fn
   };
 }];

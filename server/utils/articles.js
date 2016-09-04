@@ -1,5 +1,7 @@
 const access = require('../connect/firebase-connect.js');
 const aggregate = require('./aggregate');
+
+
 module.exports = {
   get: (query, res) => {
     access.get(query.base, query.projet).then((data) => {
@@ -8,6 +10,15 @@ module.exports = {
       res.status(400).send(err);
     });
   },
+
+  tags: (query, res) => {
+    access.get(query.base, query.projet).then((data) => {
+      res.json(aggregate.articles(data, query.value));
+    }, (err) => {
+      res.status(400).send(err);
+    });
+  },
+
   retrieve: (query, res) => {
     // myFirebase
     // .base(base)
