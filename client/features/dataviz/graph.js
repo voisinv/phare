@@ -3,7 +3,7 @@ module.exports = function($scope, datavizSrv, $http, $window) {
   const self = this;
   self.step = 1;
 
-  datavizSrv.init();
+  //datavizSrv.init();
 
   $scope.$watch(() => self.step, (val, old) => {
     if (val !== old) datavizSrv.filter(val);
@@ -18,9 +18,7 @@ module.exports = function($scope, datavizSrv, $http, $window) {
 
   self.reset = () => datavizSrv.reset();
 
-  $scope.$watch(self.graph, (val, old) => {
-    if (val !== old) datavizSrv.setData(val);
-  });
+  datavizSrv.setData(self.graph);
 
   datavizSrv.nodeSelectedCb(function(val) {
     $http.get('/api/tags?base=bdd-dev&projet=projet1&value=' + val)

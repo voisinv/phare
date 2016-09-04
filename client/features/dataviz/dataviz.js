@@ -33,7 +33,7 @@ const $ = require('jquery');
 module.exports = ['$scope', '$http', '$mdDialog', '$mdMedia', function($scope, $http, $mdDialog, $mdMedia) {
   const self = this;
 
-  self.isReady = true;
+  self.isReady = false;
 
   self.configure = (ev) => {
     const useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
@@ -51,7 +51,6 @@ module.exports = ['$scope', '$http', '$mdDialog', '$mdMedia', function($scope, $
         return $http.get('/api/articles?base=' +  obj.base + '&projet=' + obj.project);
       })
       .then(({data}) => {
-        console.log(data);
         self.graphData = data;
         self.isReady = true;
       });

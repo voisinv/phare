@@ -251,10 +251,11 @@ let nodeSelectedCbFn;
 
 module.exports = ['$http', function($http) {
   function init() {
-    $http.get('/mock').then(res => {
-      console.log(res.data);
-      createSVG(res.data);
-    });
+    //$http.get('/mock').then(res => {
+    //  console.log(res.data);
+    //  createSVG(res.data);
+    //});
+
   }
 
   return {
@@ -265,7 +266,6 @@ module.exports = ['$http', function($http) {
     reset,
     nodeSelectedCb : fn => nodeSelectedCbFn = fn,
     setData: function(data) {
-      d3.select('svg').remove();
       createSVG(data);
     }
   };
