@@ -59,7 +59,8 @@ function createSVG(data) {
       // put circle on top of svg
       .each(function() {
         d3.select(this.parentNode).raise();
-      });
+      })
+      .on('click', nodeClicked);
     circleGroup
       .append('text')
       .attr('fill', 'black')
@@ -70,11 +71,36 @@ function createSVG(data) {
         var elem = this;
         setTimeout(() =>
           d3.select(elem)
-            .attr('dx', ((d.weight * 10) - elem.getBBox().width)/2));
+            .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2));
         return 0;
       })
       .text(d => _.capitalize(d.value));
   });
+}
+let CURRENT_NODE_INDEX;
+function nodeClicked(e, index) {
+  if (index === CURRENT_NODE_INDEX) {
+    reset();
+    CURRENT_NODE_INDEX = -1;
+    return;
+  }
+  CURRENT_NODE_INDEX = index;
+  let indexOfNodes = [];
+  links
+    .style('opacity', 0.1)
+    .style('stroke-width', 0.3)
+    .filter(d => d.source.id === index || d.target.id === index)
+    .style('opacity', 1)
+    .style('stroke-width', 2)
+    .each(d => {
+      indexOfNodes.push(d.source.id);
+      indexOfNodes.push(d.target.id);
+    });
+
+  circleGroup
+    .style('opacity', 0.3)
+    .filter((d, i) => indexOfNodes.indexOf(i) + 1)
+    .style('opacity', 1);
 }
 
 function showLabel() {
@@ -99,15 +125,26 @@ let SHOW_ALL_LABEL = false;
 function displayName(shouldDisplay) {
   SHOW_ALL_LABEL = shouldDisplay;
   if (shouldDisplay) {
-    nodes.each(function() { showLabel.call(this) });
+    nodes.each(function() {
+      showLabel.call(this)
+    });
   }
   else {
-    nodes.each(function() { hideLabel.call(this) });
+    nodes.each(function() {
+      hideLabel.call(this)
+    });
   }
 }
 
 function changeWidth(val) {
   links.style('stroke-width', val)
+}
+
+function reset() {
+  circleGroup.style('opacity', 1);
+  links
+    .style('stroke-width', 0.5)
+    .style('opacity', 0.5);
 }
 
 function ticked() {
@@ -133,6 +170,7 @@ module.exports = ['$http', function($http) {
     init,
     filter,
     displayName,
-    changeWidth
+    changeWidth,
+    reset
   };
 }];

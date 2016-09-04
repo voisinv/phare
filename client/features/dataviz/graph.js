@@ -18,6 +18,8 @@ module.exports = function($scope, datavizSrv) {
     }
   );
 
+  self.reset = () => datavizSrv.reset();
+
 
   /*
   const width = $window.innerWidth;

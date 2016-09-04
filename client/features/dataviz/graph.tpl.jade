@@ -7,6 +7,7 @@ div(layout-wrap, layout-align="row")
         {{graph.step}}
         md-checkbox(ng-model='graph.displayName', aria-label='Display Name', style='margin-left: 50px;')
             | Display name
+        md-button.md-primary(ng-click='graph.reset()', md-no-ink) Reset
 
 
 .visualize-svg
