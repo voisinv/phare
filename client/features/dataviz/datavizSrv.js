@@ -121,8 +121,8 @@ function nodeClicked(e, index) {
       indexOfNodes.push(d.target.id);
     });
 
-  getNodesToModify()
-    .style('opacity', (indexOfNodes.indexOf(i) + 1) ? 1 : 0.3);
+  nodes
+    .style('opacity', (d, i) => (indexOfNodes.indexOf(i) + 1) ? 1 : 0.3);
 
 
   displayName(SHOW_ALL_LABEL);
@@ -206,12 +206,12 @@ function hideLabelOnMouseLeave(d) {
 }
 
 function shouldDisplayLabelWhenClicked() {
-  const parentOpacity = d3.select(this.parentNode).style('opacity');
+  const parentOpacity = d3.select(this).style('opacity');
   return parentOpacity != 0 && parentOpacity != 0.3;
 }
 
 function shouldDisplayLabel() {
-  return d3.select(this.parentNode).style('opacity') != 0;
+  return d3.select(this).style('opacity') != 0;
 }
 
 function changeWidth(val) {
