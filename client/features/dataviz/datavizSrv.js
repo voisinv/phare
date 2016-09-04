@@ -8,8 +8,8 @@ const _ = require('lodash');
 const color = d3.scaleOrdinal(d3.schemeCategory20);
 let simulation;
 let hideNodes;
-let nodes;
-let links;
+let nodes = [];
+let links = [];
 let circleGroup;
 //const scale = d3.scale
 let svg;
@@ -30,6 +30,8 @@ function zoomed() {
   links.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
 }
 let lastTransformation = {x: 0, y: 0, k:0};
+
+let bilinks = [];
 function createSVG(data) {
   svg = d3.select('.visualize-svg')
     .append('svg')
@@ -43,7 +45,6 @@ function createSVG(data) {
       .on('zoom', zoomed));*/
     //.call(zoom);
 
-
   setTimeout(() => {
     simulation = d3.forceSimulation(data.tags)
       .force('charge', d3.forceManyBody().strength(-150))
@@ -51,21 +52,33 @@ function createSVG(data) {
       .force('collide', d3.forceCollide().radius(d => (5 * d.weight) + 0.5))
       .force('x', d3.forceX(width / 2))
       .force('y', d3.forceY(height / 2));
+
+
     //.on('tick', ticked);
 
-    for (var i = 400; i > 0; --i) simulation.tick();
+    simulation
+      .nodes(data.tags);
+
+    for (var i = 10; i > 0; --i) simulation.tick();
+
     simulation.stop();
-    circleGroup = svg.selectAll('.circle').data(data.tags).enter().append('g');
+    circleGroup = svg.selectAll('.circle').data(data.tags.filter(e => e.id)).enter().append('g');
 
     links = svg.selectAll('.link').data(data.links).enter()
-      .append('line')
+      .append('path')
       .attr('class', 'link')
       .style('stroke', d => color(d.source.group))
-      //.style('stroke-width', d => d.source.weight > 1 && d.target.weight > 1 ? (d.source.weight + d.target.weight) / 3 : 0)
-      .attr('x1', (d) => d.source.x)
-      .attr('y1', (d) => d.source.y)
-      .attr('x2', (d) => d.target.x)
-      .attr('y2', (d) => d.target.y);
+      .attr("d", function(d) {
+        var dx = d.target.x - d.source.x,
+          dy = d.target.y - d.source.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+      });
+    //.style('stroke-width', d => d.source.weight > 1 && d.target.weight > 1 ? (d.source.weight + d.target.weight) / 3 : 0)
+    //.attr('x1', (d) => d.source.x)
+    //.attr('y1', (d) => d.source.y)
+    //.attr('x2', (d) => d.target.x)
+    //.attr('y2', (d) => d.target.y);
 
     hideNodes = circleGroup
       .append('circle')
@@ -91,23 +104,13 @@ function createSVG(data) {
       })
       .on('click', nodeClicked)
     ;
-    /*circleGroup
-     .append('text')
-     .attr('fill', 'black')
-     .style('opacity', 0)
-     .attr('x', d => (d.x - (d.weight * 5)))
-     .attr('y', d => (d.y - (d.weight * 5)) - 5)
-     .attr('dx', function(d) {
-     var elem = this;
-     setTimeout(() =>
-     d3.select(elem)
-     .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2));
-     return 0;
-     })
-     //.attr('transform', 'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ') scale(' + d3.event.transform.k + ')')
-
-     .text(d => _.capitalize(d.value));*/
   });
+}
+
+function positionLink(d) {
+  return "M" + d[0].x + "," + d[0].y
+    + "S" + d[1].x + "," + d[1].y
+    + " " + d[2].x + "," + d[2].y;
 }
 
 let CURRENT_NODE_INDEX;
