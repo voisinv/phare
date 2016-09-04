@@ -26,7 +26,7 @@ function createSVG(data) {
     simulation = d3.forceSimulation(data.tags)
       .force('charge', d3.forceManyBody().strength(-150))
       .force('link', d3.forceLink(data.links))
-      .force("collide", d3.forceCollide().radius(d => d.r + 0.5))
+      .force("collide", d3.forceCollide().radius(d => (5*d.weight) + 0.5))
       .force('x', d3.forceX(width / 2))
       .force('y', d3.forceY(height / 2))
     //.on('tick', ticked);
