@@ -18,6 +18,10 @@ module.exports = function($scope, datavizSrv, $http, $window) {
 
   self.reset = () => datavizSrv.reset();
 
+  $scope.$watch(self.graph, (val, old) => {
+    if (val !== old) datavizSrv.setData(val);
+  });
+
   datavizSrv.nodeSelectedCb(function(val) {
     $http.get('/api/tags?base=bdd-dev&projet=projet1&value=' + val)
       .then(res => {

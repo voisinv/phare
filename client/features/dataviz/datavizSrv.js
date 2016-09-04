@@ -263,6 +263,10 @@ module.exports = ['$http', function($http) {
     displayName,
     changeWidth,
     reset,
-    nodeSelectedCb : fn => nodeSelectedCbFn = fn
+    nodeSelectedCb : fn => nodeSelectedCbFn = fn,
+    setData: function(data) {
+      d3.select('svg').remove();
+      createSVG(data);
+    }
   };
 }];
