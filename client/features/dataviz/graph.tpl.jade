@@ -1,14 +1,18 @@
-
-div(layout-wrap, layout-align="row")
-    div(layout='', layout-align='center center', style='margin-left:200px; width:600px')
-        md-slider.md-primary( flex='', md-discrete, ng-model='graph.step', step='1', min='1', max='10', aria-label='rating')
-        | Width
-        md-slider.md-primary( flex='', md-discrete, ng-model='graph.width', step='.05', min='0', max='1', aria-label='rating')
-        {{graph.step}}
-        md-checkbox(ng-model='graph.displayName', aria-label='Display Name', style='margin-left: 50px;')
-            | Display name
-        md-button.md-primary(ng-click='graph.reset()', md-no-ink) Reset
-
+div(layout='row', style='background-color: #455F64; color: #18FFFF;padding: 10px;')
+    div(flex='33', layout='column', style='margin: 0 20px;')
+        | Filter
+        md-slider.md-warn( flex='', md-discrete, ng-model='graph.step', step='1', min='1', max='10', aria-label='rating')
+    div(flex='33', layout='column', style='margin: 0 20px;')
+        | Change step
+        md-slider.md-warn( flex='', md-discrete, ng-model='graph.width', step='.05', min='0', max='1', aria-label='rating')
+    div(flex='11', layout='column', style='margin: 0 20px;')
+        | Display name
+        md-checkbox(ng-model='graph.displayName', aria-label='Display Name', style='margin-top: 10px')
+    div(flex='11', layout='column', style='margin: 0 20px;')
+        md-button.md-primary.md-raised(ng-click='graph.apply()', md-no-ink) Apply
+    div(flex='11', layout='column', style='margin: 0 20px;')
+        md-button.md-raised.md-warn(ng-click='graph.reset()', md-no-ink) Reset
+br
 div(layout-wrap, layout='row')
     .visualize-svg(flex='75')
 

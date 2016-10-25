@@ -1,18 +1,10 @@
 const d3 = require('d3');
 
-const width = 1260;
-const height = 1000;
 const _ = require('lodash');
 
 //const c10 = d3.scale.category10();
-const color = d3.scaleOrdinal(d3.schemeCategory20);
-let simulation;
-let hideNodes;
-let nodes = [];
-let links = [];
-let circleGroup;
 //const scale = d3.scale
-let svg;
+/*
 var zoom = d3.zoom()
   .scaleExtent([1, 100])
   .on('zoom', function() {
@@ -23,77 +15,15 @@ var zoom = d3.zoom()
       .attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
     links
       .attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
-  });
-function zoomed() {
-  lastTransformation = d3.event.transform;
-  circleGroup.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
-  links.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
-  d3.selectAll('text').attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
-}
-let lastTransformation = {x: 0, y: 0, k:0};
+  })*/
 
-let bilinks = [];
+let datalab;
 function createSVG(data) {
-  svg = d3.select('.visualize-svg')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    //.attr('display', 'block')
-    //.style('margin', 'auto')
-    .style('border', '1px solid black')
-    .call(d3.zoom()
-      .scaleExtent([1 / 2, 8])
-      .on('zoom', zoomed));
-    //.call(zoom);
 
-  setTimeout(() => {
-    simulation = d3.forceSimulation(data.tags)
-      .force('charge', d3.forceManyBody().strength(-150))
-      .force('link', d3.forceLink(data.links))
-      .force('collide', d3.forceCollide().radius(d => (5 * d.weight) + 0.5))
-      .force('x', d3.forceX(width / 2))
-      .force('y', d3.forceY(height / 2));
-
-    for (var i = 100; i > 0; --i) simulation.tick();
-
-    simulation.stop();
-    circleGroup = svg.selectAll('.circle').data(data.tags).enter().append('g');
-
-    links = svg.selectAll('.link').data(data.links).enter()
-      .append('path')
-      .attr('class', 'link')
-      .style('stroke', d => color(d.source.group))
-      .attr("d", function(d) {
-        var dx = d.target.x - d.source.x,
-          dy = d.target.y - d.source.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
-        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-      });
-
-    hideNodes = circleGroup
-      .append('circle')
-      .attr('fill', 'white')
-      .attr('cx', d => d.x)
-      .attr('cy', d => d.y)
-      .attr('r', d => d.weight * 5);
-
-    nodes = circleGroup
-      .append('circle')
-      .attr('class', 'circle')
-      .attr('class', 'node')
-      .attr('fill', d => color(d.group))
-      .attr('cx', d => d.x)
-      .attr('cy', d => d.y)
-      .attr('r', d => d.weight * 5)
-      .on('mouseenter', showLabelOnMouseEnter)
-      .on('mouseleave', hideLabelOnMouseLeave)
-      // put circle on top of svg
-      .each(function() {
-        d3.select(this.parentNode).raise();
-      })
-      .on('click', nodeClicked)
-    ;
-  });
+  datalab = new Datalab(data);
+  datalab
+    .simulate()
+    .draw();
 }
 
 let CURRENT_NODE_INDEX;
@@ -106,7 +36,7 @@ function nodeClicked(e, index) {
     return;
   }
   if (index === CURRENT_NODE_INDEX) {
-    reset();
+    //reset();
     CURRENT_NODE_INDEX = -1;
     return;
   }
@@ -159,40 +89,20 @@ function showLabel(d) {
     .text(_.capitalize(d.value));
 }
 
-function hideLabel() {
-  if (SHOW_ALL_LABEL) return;
-  d3.select(this).style('opacity', 0.8);
-  d3.select(this.parentNode.parentNode.lastChild)
-    .transition().remove();
-}
+function reset() {}
 
 function filter(step) {
-  links
-    .style('opacity', d => d.source.weight >= step && d.target.weight >= step ? 0.6 : 0);
-  nodes
-  //.filter(shouldDisplayLabelWhenClicked)
-    .each(function() {
-      d3.select(this.parentNode).style('opacity', d => d.weight >= step ? 1 : 0);
-    });
-  displayName(SHOW_ALL_LABEL);
+  datalab
+    .reset()
+    .configure({step: step})
+    .draw();
 }
 let SHOW_ALL_LABEL = false;
 function displayName(shouldDisplay) {
-  svg.selectAll('text').remove();
-  let select;
-  if (shouldDisplay && CURRENT_NODE_INDEX !== -1) {
-    select = nodes.filter(shouldDisplayLabelWhenClicked);
-  }
-  else {
-    if (shouldDisplay) {
-      select = nodes.filter(shouldDisplayLabel);
-    }
-  }
-  SHOW_ALL_LABEL = shouldDisplay;
-
-  if (select) {
-    select.each(showLabel);
-  }
+  datalab
+    .reset()
+    .configure({labelsOn: shouldDisplay})
+    .draw();
 }
 function getLinksToModify() {
   return links
@@ -201,38 +111,8 @@ function getLinksToModify() {
     });
 }
 
-function getNodesToModify() {
-  return CURRENT_NODE_INDEX !== -1 ? nodes.filter(shouldDisplayLabelWhenClicked) : nodes.filter(shouldDisplayLabel);
-}
-function showLabelOnMouseEnter(d) {
-  if (shouldDisplayLabelWhenClicked.call(this) && !SHOW_ALL_LABEL) {
-    showLabel.call(this, d);
-  }
-}
-function hideLabelOnMouseLeave(d) {
-  if (shouldDisplayLabelWhenClicked.call(this) && !SHOW_ALL_LABEL) {
-    hideLabel.call(this, d);
-  }
-}
-
-function shouldDisplayLabelWhenClicked() {
-  const parentOpacity = d3.select(this).style('opacity');
-  return parentOpacity != 0 && parentOpacity != 0.3;
-}
-
-function shouldDisplayLabel() {
-  return d3.select(this).style('opacity') != 0;
-}
-
 function changeWidth(val) {
   links.style('stroke-width', val);
-}
-
-function reset() {
-  nodes.style('opacity', 0.8);
-  links
-    .style('stroke-width', 0.5)
-    .style('opacity', 0.5);
 }
 
 function ticked() {
@@ -248,6 +128,253 @@ function ticked() {
 }
 
 let nodeSelectedCbFn;
+
+class DatalabPosition {
+  constructor(data) {
+    this._width = 1260;
+    this._height = 1000;
+
+    this.nodes = [];
+    this.links = [];
+
+    this.simulation = [];
+    this.circleGroup = [];
+
+    this.color = d3.scaleOrdinal(d3.schemeCategory20);
+    this.svg;
+    this.lastTransformation = {x: 0, y: 0, k:0};
+
+    this.__step = 1;
+    this.__labelsOn = false;
+
+    this.data = data;
+  }
+
+  zoomed() {
+    this.lastTransformation = d3.event.transform;
+    this.circleGroup.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
+    this.links.attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
+    d3.selectAll('text').attr('transform', 'translate(' + (d3.event.transform.x) + ',' + (d3.event.transform.y) + ') scale(' + (d3.event.transform.k) + ')');
+  }
+
+  appendNode(root, opacity) {
+
+    const hidedNode = root
+      .append('circle')
+      .attr('fill', 'white')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.weight * 5);
+
+    const node = root
+      .append('circle')
+      .attr('class', 'circle')
+      .attr('class', 'node')
+      .style('opacity', opacity)
+      .attr('fill', d => this.color(d.group))
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.weight * 5)
+      .on('mouseenter', this.mouseEnter.bind(this))
+      .on('mouseleave', this.removeLabel.bind(this))
+      // put circle on top of svg
+      .each(function() {
+        d3.select(this.parentNode).raise();
+      })
+      .on('click', this.nodeClicked);
+
+    this.hideNodes.push(hidedNode);
+    this.nodes.push(node);
+  }
+
+  appendNodesSelection(root, selection, opacity) {
+    const elem = root
+      .selectAll('.circle')
+      .data(selection)
+      .enter()
+      .append('g')
+      .attr('class', 'nodeGroup')
+      .each(function(d) {
+        if (false) {
+          this.appendNode(this, 0.3);
+        }
+        else {
+          this.appendNode(this, 0.9);
+        }
+      });
+
+    return this;
+  }
+
+  getTopTags() {
+
+  }
+  getDownTags() {
+
+  }
+
+  getTopLinks() {
+
+  }
+  getDownLinks() {
+
+  }
+
+  getTopLabels() {
+
+  }
+  getDownLabels() {
+
+  }
+}
+
+
+class Datalab extends DatalabPosition {
+  constructor(data) {
+    super(data);
+    this.data = data;
+
+    this.nodes = this.data.tags;
+    this.links = this.data.links;
+
+    this.svg = d3.select('.visualize-svg')
+      .append('svg')
+      .attr('width', this._width)
+      .attr('height', this._height)
+      //.attr('display', 'block')
+      //.style('margin', 'auto')
+      .style('border', '1px solid black')
+      .call(d3.zoom()
+        .scaleExtent([1 / 2, 8])
+        .on('zoom', this.zoomed));
+  }
+
+  simulate() {
+    this.simulation = d3.forceSimulation(this.nodes)
+      .force('charge', d3.forceManyBody().strength(-150))
+      .force('link', d3.forceLink(this.links))
+      .force('collide', d3.forceCollide().radius(d => (5 * d.weight) + 0.5))
+      .force('x', d3.forceX(this._width / 2))
+      .force('y', d3.forceY(this._height / 2));
+
+    for (var i = 100; i > 0; --i) this.simulation.tick();
+
+    this.simulation.stop();
+    return this;
+  }
+
+  draw() {
+    this
+      .drawLinks()
+      .drawNodes();
+
+    if (this.__labelsOn) {
+      this.drawLabels();
+    }
+    return this;
+  }
+
+  configure(config = {}) {
+
+    this.__step = config.step || this.__step;
+    this.__labelsOn = _.isUndefined(config.labelsOn) ? this.__labelsOn : config.labelsOn;
+
+    this.nodes = this.data.tags.filter(e => e.weight >= this.__step);
+    const indexOfNodes = this.nodes.map(n => n.id);
+    this.links = this.data.links
+      .filter((d, i) => (indexOfNodes.indexOf(d.source.id) + 1) && (indexOfNodes.indexOf(d.target.id) + 1));
+    return this;
+  }
+
+  reset() {
+    this.svg.selectAll('*').remove();
+
+    return this;
+  }
+
+  /*drawNodes() {
+    this.circleGroup = this.svg.selectAll('.circle').data(this.nodes).enter().append('g').attr('class', 'nodeGroup');
+
+    this.hideNodes = this.circleGroup
+      .append('circle')
+      .attr('fill', 'white')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.weight * 5);
+
+    this.nodes = this.circleGroup
+      .append('circle')
+      .attr('class', 'circle')
+      .attr('class', 'node')
+      .attr('fill', d => this.color(d.group))
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.weight * 5)
+      .on('mouseenter', this.mouseEnter.bind(this))
+      .on('mouseleave', this.removeLabel.bind(this))
+      // put circle on top of svg
+      .each(function() {
+        d3.select(this.parentNode).raise();
+      })
+      .on('click', this.nodeClicked);
+    return this;
+  }*/
+
+  nodeClicked(d) {
+
+  }
+
+  drawLabels() {
+    this.nodes
+      .each(this.displayLabel.bind(this));
+  }
+
+  mouseEnter(d) {
+
+    this.displayLabel.call(this, d);
+  }
+
+  displayLabel(d) {
+    this.svg
+      .append('text')
+      .attr('fill', 'black')
+      .attr('x', (d.x - (d.weight * 5)))
+      .attr('y', (d.y - (d.weight * 5)) - 5)
+      .attr('dx', function() {
+        const elem = this;
+        setTimeout(() =>
+          d3.select(elem)
+            .transition()
+            .attr('dx', ((d.weight * 10) - elem.getBBox().width) / 2)
+        );
+        return 0;
+      })
+      //.attr('transform', lastTransformation)
+      //.attr('transform', 'translate(' + lastTransformation.x + ',' + lastTransformation.y + ')' )
+
+      .text(_.capitalize(d.value));
+  }
+
+  removeLabel() {
+    this.svg.select('text').remove();
+  }
+
+  drawLinks() {
+    this.links = this.svg.selectAll('.link').data(this.links).enter()
+      .append('path')
+      .attr('class', 'link')
+      .style('stroke', d => this.color(d.source.group))
+      .attr("d", function(d) {
+        var dx = d.target.x - d.source.x,
+          dy = d.target.y - d.source.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+      });
+    return this;
+  }
+
+
+}
 
 module.exports = ['$http', function($http) {
   function init() {

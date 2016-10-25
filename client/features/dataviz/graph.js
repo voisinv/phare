@@ -1,3 +1,5 @@
+const DataClass = require('./DatalabClass.js');
+
 module.exports = function($scope, datavizSrv, $http, $window) {
 
   const self = this;
@@ -6,7 +8,8 @@ module.exports = function($scope, datavizSrv, $http, $window) {
   //datavizSrv.init();
 
   $scope.$watch(() => self.step, (val, old) => {
-    if (val !== old) datavizSrv.filter(val);
+    //if (val !== old) datavizSrv.filter(val);
+    if (val !== old) Datalab.changeStep(val).draw();
   });
 
   $scope.$watch(() => self.displayName, (val, old) => {
@@ -17,10 +20,18 @@ module.exports = function($scope, datavizSrv, $http, $window) {
   });
 
   self.reset = () => datavizSrv.reset();
+  let Datalab;
 
-  datavizSrv.setData(self.graph);
+  $http.get('/mock')
+    .then(({data}) => {
+      //datavizSrv.setData(data);
+      Datalab = new DataClass(data);
+      Datalab
+        .draw();
 
-  datavizSrv.nodeSelectedCb(function(val) {
+    });
+
+    datavizSrv.nodeSelectedCb(function(val) {
     $http.get('/api/tags?base=bdd-dev&projet=projet1&value=' + val)
       .then(res => {
         self.articles = res.data;
